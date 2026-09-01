@@ -351,8 +351,39 @@
     </div>
 
     <script>
-        var DINGTALK_WEBHOOK = 'https://oapi.dingtalk.com/robot/send?access_token=6f3fcdf3e0a51e9aa1e9245ee1a28c6532bbe5db48bb1656447e4af9ef38d2c4';
+        // ============================================================
+        //  ✅ 已配置好你的钉钉机器人信息
+        // ============================================================
+        var DINGTALK_ACCESS_TOKEN = '7630a31f94a998e0c8157be12b743c33dd34f3c9267e0459d095d90dfac9a38f';
+        var DINGTALK_SECRET = 'SEC6ff44ba53d82acc7ea35d3d247b97a1c8cd35bf753fb100c8367a1184d21352e';
 
+        // ============================================================
+        //  工具函数：生成钉钉加签签名
+        // ============================================================
+        function generateDingTalkSign(secret) {
+            var timestamp = Date.now();
+            var stringToSign = timestamp + '\n' + secret;
+            var encoder = new TextEncoder();
+            var keyData = encoder.encode(stringToSign);
+            var secretData = encoder.encode(secret);
+            return crypto.subtle.importKey('raw', secretData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+                .then(function(key) {
+                    return crypto.subtle.sign('HMAC', key, keyData);
+                })
+                .then(function(signature) {
+                    var hash = Array.from(new Uint8Array(signature)).map(function(b) {
+                        return ('0' + b.toString(16)).slice(-2);
+                    }).join('');
+                    return {
+                        timestamp: timestamp,
+                        sign: hash
+                    };
+                });
+        }
+
+        // ============================================================
+        //  1. 设置默认日期为「明天」
+        // ============================================================
         (function setDefaultDate() {
             var dateInput = document.getElementById('lessonDate');
             var tomorrow = new Date();
@@ -368,6 +399,9 @@
             dateInput.min = tYear + '-' + tMonth + '-' + tDay;
         })();
 
+        // ============================================================
+        //  2. 表单提交处理（含钉钉加签推送）
+        // ============================================================
         function handleSubmit(e) {
             e.preventDefault();
 
@@ -397,25 +431,32 @@
             document.getElementById('successMsg').classList.remove('show');
             document.getElementById('errorMsg').classList.remove('show');
 
-            var message = {
-                msgtype: 'text',
-                text: {
-                    content: '🌍 乐语道 Joy Language · 新预约通知\n\n' +
-                        '📚 课程：' + course + '\n' +
-                        '👤 姓名：' + name + '\n' +
-                        '📱 电话：' + phone + '\n' +
-                        '📆 日期：' + date + '\n' +
-                        '⏰ 时段：' + time + '\n' +
-                        '📝 备注：' + (note || '无') + '\n\n' +
-                        '🕐 预约时间：' + new Date().toLocaleString('zh-CN')
-                }
-            };
+            // 生成加签签名
+            generateDingTalkSign(DINGTALK_SECRET)
+                .then(function(signData) {
+                    var webhookUrl = 'https://oapi.dingtalk.com/robot/send?access_token=' + DINGTALK_ACCESS_TOKEN +
+                        '&timestamp=' + signData.timestamp + '&sign=' + signData.sign;
 
-            fetch(DINGTALK_WEBHOOK, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(message)
-            })
+                    var message = {
+                        msgtype: 'text',
+                        text: {
+                            content: '🌍 乐语道 Joy Language · 新预约通知\n\n' +
+                                '📚 课程：' + course + '\n' +
+                                '👤 姓名：' + name + '\n' +
+                                '📱 电话：' + phone + '\n' +
+                                '📆 日期：' + date + '\n' +
+                                '⏰ 时段：' + time + '\n' +
+                                '📝 备注：' + (note || '无') + '\n\n' +
+                                '🕐 预约时间：' + new Date().toLocaleString('zh-CN')
+                        }
+                    };
+
+                    return fetch(webhookUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(message)
+                    });
+                })
                 .then(function(res) {
                     return res.json();
                 })
@@ -423,7 +464,8 @@
                     console.log('📩 钉钉推送结果：', data);
                     if (data.errcode === 0) {
                         document.getElementById('successMsg').classList.add('show');
-                        document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth',
+                            block: 'center' });
                         btn.disabled = false;
                         btn.textContent = '✅ 预约成功！';
                     } else {
@@ -443,6 +485,9 @@
                 });
         }
 
+        // ============================================================
+        //  3. 点击提示可关闭
+        // ============================================================
         document.getElementById('successMsg').addEventListener('click', function() {
             this.classList.remove('show');
             var btn = document.getElementById('submitBtn');
