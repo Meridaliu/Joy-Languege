@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>约课系统 · 轻松预约</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乐语道 Joy Language · 约课系统</title>
     <style>
         /* ===== 全局样式 ===== */
         * {
@@ -19,25 +20,25 @@
             justify-content: center;
             align-items: center;
             padding: 30px 20px;
-            background: linear-gradient(145deg, #f7f0fc 0%, #e9def0 100%);
+            background: linear-gradient(145deg, #fef7f0 0%, #fce4d6 100%);
         }
 
         /* ===== 主卡片 ===== */
         .booking-card {
-            max-width: 780px;
+            max-width: 850px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 48px;
             padding: 45px 40px 50px;
-            box-shadow: 0 30px 80px rgba(90, 50, 130, 0.18);
+            box-shadow: 0 30px 80px rgba(200, 120, 60, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.5);
             transition: all 0.2s;
         }
 
         .booking-card:hover {
-            box-shadow: 0 40px 100px rgba(90, 50, 130, 0.25);
+            box-shadow: 0 40px 100px rgba(200, 120, 60, 0.2);
         }
 
         /* ===== 头部 ===== */
@@ -45,7 +46,7 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            margin-bottom: 12px;
+            margin-bottom: 6px;
         }
 
         .header-icon {
@@ -55,56 +56,107 @@
         .header h1 {
             font-size: 2rem;
             font-weight: 700;
-            color: #2d1b3d;
+            color: #4a2c1a;
             letter-spacing: -0.5px;
         }
 
-        .subhead {
-            color: #6b5a7a;
+        .header .sub-brand {
             font-size: 1rem;
-            margin-bottom: 30px;
+            color: #b8865b;
+            font-weight: 400;
+            margin-left: 4px;
+        }
+
+        .subhead {
+            color: #8a6d4e;
+            font-size: 1rem;
+            margin-bottom: 24px;
             padding-left: 48px;
-            border-left: 3px solid #b8a0cc;
+            border-left: 3px solid #e8c4a0;
             padding-left: 18px;
         }
 
-        /* ===== 课程信息条 ===== */
-        .course-info {
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            border-radius: 24px;
-            padding: 18px 24px;
-            color: white;
+        /* ===== 课程选择 ===== */
+        .course-selector {
+            margin-bottom: 28px;
+        }
+
+        .course-selector label {
+            display: block;
+            font-weight: 600;
+            color: #4a2c1a;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .course-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .course-option {
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 2px solid #f0e0d0;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
-            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
-        }
-
-        .course-name {
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-
-        .course-price {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 6px 18px;
-            border-radius: 40px;
-            font-weight: 600;
             font-size: 0.95rem;
-            backdrop-filter: blur(4px);
+        }
+
+        .course-option:hover {
+            border-color: #dba87a;
+            background: #fdf8f3;
+        }
+
+        .course-option input[type="radio"] {
+            accent-color: #c28a5c;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        .course-option .price-tag {
+            color: #c28a5c;
+            font-weight: 600;
+            font-size: 0.85rem;
+            background: #f5ede6;
+            padding: 2px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+            margin-left: 8px;
+        }
+
+        .course-option .course-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .course-option .badge {
+            font-size: 0.7rem;
+            background: #e8c4a0;
+            color: #4a2c1a;
+            padding: 0 8px;
+            border-radius: 12px;
+            font-weight: 600;
         }
 
         /* ===== 表单区域 ===== */
         .form-group {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
             font-weight: 600;
-            color: #2d1b3d;
+            color: #4a2c1a;
             margin-bottom: 6px;
             font-size: 0.95rem;
         }
@@ -119,7 +171,7 @@
             width: 100%;
             padding: 14px 18px;
             border-radius: 18px;
-            border: 2px solid #e5dced;
+            border: 2px solid #f0e0d0;
             background: white;
             font-size: 1rem;
             transition: border 0.25s, box-shadow 0.25s;
@@ -129,8 +181,8 @@
 
         .form-group input:focus,
         .form-group select:focus {
-            border-color: #7c3aed;
-            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+            border-color: #c28a5c;
+            box-shadow: 0 0 0 4px rgba(194, 138, 92, 0.12);
         }
 
         .form-row {
@@ -139,7 +191,6 @@
             gap: 18px;
         }
 
-        /* ===== 日期 & 时段（视觉增强） ===== */
         .datetime-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -152,27 +203,27 @@
             padding: 18px;
             border: none;
             border-radius: 60px;
-            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            background: linear-gradient(135deg, #c28a5c, #a87048);
             color: white;
             font-size: 1.2rem;
             font-weight: 700;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.25s;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+            box-shadow: 0 10px 30px rgba(194, 138, 92, 0.3);
             margin-top: 10px;
             letter-spacing: 0.5px;
         }
 
         .btn-book:hover {
             transform: translateY(-2px);
-            box-shadow: 0 16px 40px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 16px 40px rgba(194, 138, 92, 0.4);
         }
 
         .btn-book:active {
             transform: scale(0.97);
         }
 
-        /* ===== 成功提示（默认隐藏） ===== */
+        /* ===== 成功提示 ===== */
         .success-message {
             display: none;
             background: #e6f7e6;
@@ -198,31 +249,29 @@
         .footer-note {
             margin-top: 24px;
             text-align: center;
-            color: #9a8aa8;
+            color: #b09078;
             font-size: 0.85rem;
         }
 
         /* ===== 响应式 ===== */
-        @media (max-width: 600px) {
+        @media (max-width: 640px) {
             .booking-card {
-                padding: 30px 20px 35px;
+                padding: 28px 18px 35px;
                 border-radius: 32px;
             }
-            .form-row {
+            .form-row, .datetime-grid {
                 grid-template-columns: 1fr;
                 gap: 0;
             }
-            .datetime-grid {
+            .course-options {
                 grid-template-columns: 1fr;
-                gap: 0;
             }
             .header h1 {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
             }
-            .course-info {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+            .course-option {
+                font-size: 0.9rem;
+                padding: 10px 14px;
             }
         }
     </style>
@@ -232,21 +281,53 @@
     <div class="booking-card">
         <!-- 头部 -->
         <div class="header">
-            <span class="header-icon">📅</span>
-            <h1>预约课程</h1>
+            <span class="header-icon">🌍</span>
+            <div>
+                <h1>乐语道 <span class="sub-brand">Joy Language</span></h1>
+            </div>
         </div>
-        <div class="subhead">选择你方便的时间，轻松完成约课</div>
+        <div class="subhead">选择课程 · 预约你的专属语言时光 ✨</div>
 
-        <!-- 课程信息 -->
-        <div class="course-info">
-            <span class="course-name">🎹 钢琴一对一 · 精品课</span>
-            <span class="course-price">¥280 / 节</span>
+        <!-- ===== 课程选择 ===== -->
+        <div class="course-selector">
+            <label>📚 选择课程 <span class="required">*</span></label>
+            <div class="course-options" id="courseOptions">
+                <label class="course-option">
+                    <span class="course-label">🧒 少儿基础课 <span class="badge">1.5h</span></span>
+                    <span class="price-tag">¥450/节</span>
+                    <input type="radio" name="course" value="少儿基础课 (¥450/节)" checked />
+                </label>
+                <label class="course-option">
+                    <span class="course-label">📖 少儿A1 <span class="badge">1.5h</span></span>
+                    <span class="price-tag">¥480/节</span>
+                    <input type="radio" name="course" value="少儿A1 (¥480/节)" />
+                </label>
+                <label class="course-option">
+                    <span class="course-label">🧑 成人基础课 <span class="badge">月卡</span></span>
+                    <span class="price-tag">月卡</span>
+                    <input type="radio" name="course" value="成人基础课 (月卡)" />
+                </label>
+                <label class="course-option">
+                    <span class="course-label">📈 成人进阶课 <span class="badge">月卡</span></span>
+                    <span class="price-tag">月卡</span>
+                    <input type="radio" name="course" value="成人进阶课 (月卡)" />
+                </label>
+                <label class="course-option">
+                    <span class="course-label">🗣️ 西班牙语语音课 <span class="badge">班课</span></span>
+                    <span class="price-tag">班课</span>
+                    <input type="radio" name="course" value="西班牙语语音课 (班课)" />
+                </label>
+                <label class="course-option">
+                    <span class="course-label">🇪🇸 西班牙语A1 <span class="badge">班课</span></span>
+                    <span class="price-tag">班课</span>
+                    <input type="radio" name="course" value="西班牙语A1 (班课)" />
+                </label>
+            </div>
         </div>
 
         <!-- ===== 预约表单 ===== -->
         <form id="bookingForm" onsubmit="handleSubmit(event)">
 
-            <!-- 姓名 + 电话（同一行） -->
             <div class="form-row">
                 <div class="form-group">
                     <label>姓名 <span class="required">*</span></label>
@@ -258,32 +339,28 @@
                 </div>
             </div>
 
-            <!-- 日期 + 时段（同一行） -->
             <div class="datetime-grid">
                 <div class="form-group">
                     <label>📆 日期 <span class="required">*</span></label>
                     <input type="date" id="lessonDate" required />
                 </div>
                 <div class="form-group">
-                    <label>⏰ 时段 <span class="required">*</span></label>
+                    <label>⏰ 时段 (1.5h) <span class="required">*</span></label>
                     <select id="lessonTime" required>
                         <option value="">— 请选择 —</option>
-                        <option value="09:00-10:00">09:00 – 10:00</option>
-                        <option value="10:30-11:30">10:30 – 11:30</option>
-                        <option value="14:00-15:00">14:00 – 15:00</option>
-                        <option value="15:30-16:30">15:30 – 16:30</option>
-                        <option value="19:00-20:00">19:00 – 20:00</option>
+                        <option value="15:00-16:30">15:00 – 16:30</option>
+                        <option value="16:30-18:00">16:30 – 18:00</option>
+                        <option value="18:00-19:30">18:00 – 19:30</option>
+                        <option value="19:30-21:00">19:30 – 21:00</option>
                     </select>
                 </div>
             </div>
 
-            <!-- 备注（可选） -->
             <div class="form-group">
                 <label>📝 备注（可选）</label>
-                <input type="text" id="lessonNote" placeholder="如：我想学《致爱丽丝》" />
+                <input type="text" id="lessonNote" placeholder="如：我想了解少儿基础课的内容" />
             </div>
 
-            <!-- 提交按钮 -->
             <button type="submit" class="btn-book">✅ 确认预约</button>
         </form>
 
@@ -292,17 +369,15 @@
             <span>🎉</span>
             <div>
                 <strong>预约成功！</strong><br />
-                我们将在 30 分钟内与你确认具体安排。
+                乐语道 Joy Language 将在 24 小时内与你联系确认。
             </div>
         </div>
 
-        <div class="footer-note">⏳ 每时段仅限 1 人 · 预约后请按时出席</div>
+        <div class="footer-note">⏳ 每时段仅限 4 人 · 预约后请按时出席 · 1.5 小时/节</div>
     </div>
 
     <script>
-        // ============================================================
-        //  1. 设置默认日期为「明天」（避免用户选今天已过的时段）
-        // ============================================================
+        // 设置默认日期为明天
         (function setDefaultDate() {
             const dateInput = document.getElementById('lessonDate');
             const tomorrow = new Date();
@@ -318,16 +393,19 @@
             dateInput.min = `${tYear}-${tMonth}-${tDay}`;
         })();
 
-        // ============================================================
-        //  2. 表单提交处理
-        // ============================================================
+        // 表单提交
         function handleSubmit(e) {
             e.preventDefault();
+
             const name = document.getElementById('studentName').value.trim();
             const phone = document.getElementById('studentPhone').value.trim();
             const date = document.getElementById('lessonDate').value;
             const time = document.getElementById('lessonTime').value;
             const note = document.getElementById('lessonNote').value.trim();
+
+            // 获取选中的课程
+            const selectedCourse = document.querySelector('input[name="course"]:checked');
+            const course = selectedCourse ? selectedCourse.value : '未选择';
 
             if (!name || !phone || !date || !time) {
                 alert('请完整填写姓名、手机号、日期和时段 😊');
@@ -340,6 +418,7 @@
             }
 
             const bookingData = {
+                course: course,
                 student: name,
                 phone: phone,
                 date: date,
@@ -348,8 +427,9 @@
                 bookedAt: new Date().toLocaleString('zh-CN')
             };
 
-            console.log('📩 新预约数据：', bookingData);
+            console.log('📩 乐语道新预约：', bookingData);
 
+            // 显示成功
             const successEl = document.getElementById('successMsg');
             successEl.classList.add('show');
             successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -360,6 +440,7 @@
             btn.style.opacity = '0.7';
         }
 
+        // 点击成功提示可关闭
         document.getElementById('successMsg').addEventListener('click', function() {
             this.classList.remove('show');
             const btn = document.querySelector('.btn-book');
