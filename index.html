@@ -6,14 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>乐语道 Joy Language · 约课系统</title>
     <style>
-        /* ===== 全局样式 ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', 'PingFang SC', Roboto, system-ui, sans-serif;
         }
-
         body {
             min-height: 100vh;
             display: flex;
@@ -22,8 +20,6 @@
             padding: 30px 20px;
             background: linear-gradient(145deg, #fef7f0 0%, #fce4d6 100%);
         }
-
-        /* ===== 主卡片 ===== */
         .booking-card {
             max-width: 850px;
             width: 100%;
@@ -36,37 +32,30 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             transition: all 0.2s;
         }
-
         .booking-card:hover {
             box-shadow: 0 40px 100px rgba(200, 120, 60, 0.2);
         }
-
-        /* ===== 头部 ===== */
         .header {
             display: flex;
             align-items: center;
             gap: 14px;
             margin-bottom: 6px;
         }
-
         .header-icon {
             font-size: 34px;
         }
-
         .header h1 {
             font-size: 2rem;
             font-weight: 700;
             color: #4a2c1a;
             letter-spacing: -0.5px;
         }
-
         .header .sub-brand {
             font-size: 1rem;
             color: #b8865b;
             font-weight: 400;
             margin-left: 4px;
         }
-
         .subhead {
             color: #8a6d4e;
             font-size: 1rem;
@@ -75,12 +64,9 @@
             border-left: 3px solid #e8c4a0;
             padding-left: 18px;
         }
-
-        /* ===== 课程选择 ===== */
         .course-selector {
             margin-bottom: 28px;
         }
-
         .course-selector label {
             display: block;
             font-weight: 600;
@@ -88,13 +74,11 @@
             margin-bottom: 10px;
             font-size: 1rem;
         }
-
         .course-options {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
-
         .course-option {
             padding: 12px 16px;
             border-radius: 16px;
@@ -107,12 +91,10 @@
             align-items: center;
             font-size: 0.95rem;
         }
-
         .course-option:hover {
             border-color: #dba87a;
             background: #fdf8f3;
         }
-
         .course-option input[type="radio"] {
             accent-color: #c28a5c;
             width: 18px;
@@ -120,7 +102,6 @@
             flex-shrink: 0;
             margin-left: 8px;
         }
-
         .course-option .price-tag {
             color: #c28a5c;
             font-weight: 600;
@@ -131,14 +112,12 @@
             white-space: nowrap;
             margin-left: 8px;
         }
-
         .course-option .course-label {
             display: flex;
             align-items: center;
             gap: 6px;
             flex-wrap: wrap;
         }
-
         .course-option .badge {
             font-size: 0.7rem;
             background: #e8c4a0;
@@ -147,12 +126,9 @@
             border-radius: 12px;
             font-weight: 600;
         }
-
-        /* ===== 表单区域 ===== */
         .form-group {
             margin-bottom: 20px;
         }
-
         .form-group label {
             display: block;
             font-weight: 600;
@@ -160,12 +136,10 @@
             margin-bottom: 6px;
             font-size: 0.95rem;
         }
-
         .form-group label .required {
             color: #d9465b;
             margin-left: 2px;
         }
-
         .form-group input,
         .form-group select {
             width: 100%;
@@ -178,26 +152,21 @@
             outline: none;
             color: #1f1a2a;
         }
-
         .form-group input:focus,
         .form-group select:focus {
             border-color: #c28a5c;
             box-shadow: 0 0 0 4px rgba(194, 138, 92, 0.12);
         }
-
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 18px;
         }
-
         .datetime-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 18px;
         }
-
-        /* ===== 预约按钮 ===== */
         .btn-book {
             width: 100%;
             padding: 18px;
@@ -213,23 +182,18 @@
             margin-top: 10px;
             letter-spacing: 0.5px;
         }
-
         .btn-book:hover {
             transform: translateY(-2px);
             box-shadow: 0 16px 40px rgba(194, 138, 92, 0.4);
         }
-
         .btn-book:active {
             transform: scale(0.97);
         }
-
         .btn-book:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none !important;
         }
-
-        /* ===== 成功提示 ===== */
         .success-message {
             display: none;
             background: #e6f7e6;
@@ -242,16 +206,12 @@
             align-items: center;
             gap: 12px;
         }
-
         .success-message.show {
             display: flex;
         }
-
         .success-message span {
             font-size: 1.5rem;
         }
-
-        /* ===== 错误提示 ===== */
         .error-message {
             display: none;
             background: #fde8e8;
@@ -262,26 +222,22 @@
             border-left: 6px solid #ef4444;
             font-weight: 500;
         }
-
         .error-message.show {
             display: block;
         }
-
-        /* ===== 底部 ===== */
         .footer-note {
             margin-top: 24px;
             text-align: center;
             color: #b09078;
             font-size: 0.85rem;
         }
-
-        /* ===== 响应式 ===== */
         @media (max-width: 640px) {
             .booking-card {
                 padding: 28px 18px 35px;
                 border-radius: 32px;
             }
-            .form-row, .datetime-grid {
+            .form-row,
+            .datetime-grid {
                 grid-template-columns: 1fr;
                 gap: 0;
             }
@@ -301,7 +257,6 @@
 <body>
 
     <div class="booking-card">
-        <!-- 头部 -->
         <div class="header">
             <span class="header-icon">🌍</span>
             <div>
@@ -310,7 +265,6 @@
         </div>
         <div class="subhead">选择课程 · 预约你的专属语言时光 ✨</div>
 
-        <!-- ===== 课程选择 ===== -->
         <div class="course-selector">
             <label>📚 选择课程 <span class="required">*</span></label>
             <div class="course-options" id="courseOptions">
@@ -347,9 +301,7 @@
             </div>
         </div>
 
-        <!-- ===== 预约表单 ===== -->
         <form id="bookingForm" onsubmit="handleSubmit(event)">
-
             <div class="form-row">
                 <div class="form-group">
                     <label>姓名 <span class="required">*</span></label>
@@ -360,7 +312,6 @@
                     <input type="tel" id="studentPhone" placeholder="138-0000-0000" required />
                 </div>
             </div>
-
             <div class="datetime-grid">
                 <div class="form-group">
                     <label>📆 日期 <span class="required">*</span></label>
@@ -377,16 +328,13 @@
                     </select>
                 </div>
             </div>
-
             <div class="form-group">
                 <label>📝 备注（可选）</label>
                 <input type="text" id="lessonNote" placeholder="如：我想了解少儿基础课的内容" />
             </div>
-
             <button type="submit" class="btn-book" id="submitBtn">✅ 确认预约</button>
         </form>
 
-        <!-- 成功提示 -->
         <div class="success-message" id="successMsg">
             <span>🎉</span>
             <div>
@@ -395,7 +343,6 @@
             </div>
         </div>
 
-        <!-- 错误提示 -->
         <div class="error-message" id="errorMsg">
             ⚠️ 通知发送失败，但预约已记录。请稍后联系老师确认。
         </div>
@@ -404,79 +351,63 @@
     </div>
 
     <script>
-        // ============================================================
-        //  ✅ 已配置好你的钉钉机器人 Webhook 地址（你之前发我的）
-        // ============================================================
-        const DINGTALK_WEBHOOK = https://oapi.dingtalk.com/robot/send?access_token=6f3fcdf3e0a51e9aa1e9245ee1a28c6532bbe5db48bb1656447e4af9ef38d2c4
+        var DINGTALK_WEBHOOK = 'https://oapi.dingtalk.com/robot/send?access_token=6f3fcdf3e0a51e9aa1e9245ee1a28c6532bbe5db48bb1656447e4af9ef38d2c4';
 
-        // ============================================================
-        //  1. 设置默认日期为「明天」
-        // ============================================================
         (function setDefaultDate() {
-            const dateInput = document.getElementById('lessonDate');
-            const tomorrow = new Date();
+            var dateInput = document.getElementById('lessonDate');
+            var tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
-            const year = tomorrow.getFullYear();
-            const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
-            const day = String(tomorrow.getDate()).padStart(2, '0');
-            dateInput.value = `${year}-${month}-${day}`;
-            const today = new Date();
-            const tYear = today.getFullYear();
-            const tMonth = String(today.getMonth() + 1).padStart(2, '0');
-            const tDay = String(today.getDate()).padStart(2, '0');
-            dateInput.min = `${tYear}-${tMonth}-${tDay}`;
+            var year = tomorrow.getFullYear();
+            var month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+            var day = String(tomorrow.getDate()).padStart(2, '0');
+            dateInput.value = year + '-' + month + '-' + day;
+            var today = new Date();
+            var tYear = today.getFullYear();
+            var tMonth = String(today.getMonth() + 1).padStart(2, '0');
+            var tDay = String(today.getDate()).padStart(2, '0');
+            dateInput.min = tYear + '-' + tMonth + '-' + tDay;
         })();
 
-        // ============================================================
-        //  2. 表单提交处理（含钉钉推送）
-        // ============================================================
         function handleSubmit(e) {
             e.preventDefault();
 
-            const name = document.getElementById('studentName').value.trim();
-            const phone = document.getElementById('studentPhone').value.trim();
-            const date = document.getElementById('lessonDate').value;
-            const time = document.getElementById('lessonTime').value;
-            const note = document.getElementById('lessonNote').value.trim();
+            var name = document.getElementById('studentName').value.trim();
+            var phone = document.getElementById('studentPhone').value.trim();
+            var date = document.getElementById('lessonDate').value;
+            var time = document.getElementById('lessonTime').value;
+            var note = document.getElementById('lessonNote').value.trim();
 
-            // 获取选中的课程
-            const selectedCourse = document.querySelector('input[name="course"]:checked');
-            const course = selectedCourse ? selectedCourse.value : '未选择';
+            var selectedCourse = document.querySelector('input[name="course"]:checked');
+            var course = selectedCourse ? selectedCourse.value : '未选择';
 
-            // 校验
             if (!name || !phone || !date || !time) {
                 alert('请完整填写姓名、手机号、日期和时段 😊');
                 return;
             }
-            const phoneClean = phone.replace(/-/g, '');
+            var phoneClean = phone.replace(/-/g, '');
             if (!/^\d{11}$/.test(phoneClean)) {
                 alert('请输入有效的 11 位手机号（如 13800000000）');
                 return;
             }
 
-            // 禁用按钮，防止重复提交
-            const btn = document.getElementById('submitBtn');
+            var btn = document.getElementById('submitBtn');
             btn.disabled = true;
             btn.textContent = '⏳ 发送中...';
 
-            // 隐藏旧的提示
             document.getElementById('successMsg').classList.remove('show');
             document.getElementById('errorMsg').classList.remove('show');
 
-            // ============================================================
-            //  3. 发送到钉钉机器人
-            // ============================================================
-            const message = {
-                "msgtype": "text",
-                "text": {
-                    "content": `🌍 乐语道 Joy Language · 新预约通知\n\n` +
-                               `📚 课程：${course}\n` +
-                               `👤 姓名：${name}\n` +
-                               `📱 电话：${phone}\n` +
-                               `📆 日期：${date}\n` +
-                               `⏰ 时段：${time}\n` +
-                               `📝 备注：${note || '无'}\n\n` +
-                               `🕐 预约时间：${new Date().toLocaleString('zh-CN')}`
+            var message = {
+                msgtype: 'text',
+                text: {
+                    content: '🌍 乐语道 Joy Language · 新预约通知\n\n' +
+                        '📚 课程：' + course + '\n' +
+                        '👤 姓名：' + name + '\n' +
+                        '📱 电话：' + phone + '\n' +
+                        '📆 日期：' + date + '\n' +
+                        '⏰ 时段：' + time + '\n' +
+                        '📝 备注：' + (note || '无') + '\n\n' +
+                        '🕐 预约时间：' + new Date().toLocaleString('zh-CN')
                 }
             };
 
@@ -485,44 +416,41 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(message)
             })
-            .then(res => res.json())
-            .then(data => {
-                console.log('📩 钉钉推送结果：', data);
-                if (data.errcode === 0) {
-                    // 显示成功
-                    document.getElementById('successMsg').classList.add('show');
-                    document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    btn.disabled = false;
-                    btn.textContent = '✅ 预约成功！';
-                } else {
-                    // 钉钉返回了错误码
-                    console.error('钉钉推送错误：', data);
+                .then(function(res) {
+                    return res.json();
+                })
+                .then(function(data) {
+                    console.log('📩 钉钉推送结果：', data);
+                    if (data.errcode === 0) {
+                        document.getElementById('successMsg').classList.add('show');
+                        document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        btn.disabled = false;
+                        btn.textContent = '✅ 预约成功！';
+                    } else {
+                        console.error('钉钉推送错误：', data);
+                        document.getElementById('errorMsg').classList.add('show');
+                        btn.disabled = false;
+                        btn.textContent = '✅ 确认预约';
+                    }
+                })
+                .catch(function(err) {
+                    console.error('请求失败：', err);
                     document.getElementById('errorMsg').classList.add('show');
                     btn.disabled = false;
                     btn.textContent = '✅ 确认预约';
-                }
-            })
-            .catch(err => {
-                console.error('请求失败：', err);
-                document.getElementById('errorMsg').classList.add('show');
-                btn.disabled = false;
-                btn.textContent = '✅ 确认预约';
-                // 数据保留在控制台
-                console.log('📦 预约数据（请手动记录）：', { course, name, phone, date, time, note });
-            });
+                    console.log('📦 预约数据：', { course: course, name: name, phone: phone, date: date, time: time,
+                        note: note });
+                });
         }
 
-        // ============================================================
-        //  4. 点击提示可关闭
-        // ============================================================
         document.getElementById('successMsg').addEventListener('click', function() {
             this.classList.remove('show');
-            const btn = document.getElementById('submitBtn');
+            var btn = document.getElementById('submitBtn');
             btn.textContent = '✅ 确认预约';
         });
         document.getElementById('errorMsg').addEventListener('click', function() {
             this.classList.remove('show');
-            const btn = document.getElementById('submitBtn');
+            var btn = document.getElementById('submitBtn');
             btn.textContent = '✅ 确认预约';
         });
     </script>
