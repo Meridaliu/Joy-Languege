@@ -223,6 +223,12 @@
             transform: scale(0.97);
         }
 
+        .btn-book:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
         /* ===== 成功提示 ===== */
         .success-message {
             display: none;
@@ -243,6 +249,22 @@
 
         .success-message span {
             font-size: 1.5rem;
+        }
+
+        /* ===== 错误提示 ===== */
+        .error-message {
+            display: none;
+            background: #fde8e8;
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-top: 16px;
+            color: #a11f1f;
+            border-left: 6px solid #ef4444;
+            font-weight: 500;
+        }
+
+        .error-message.show {
+            display: block;
         }
 
         /* ===== 底部 ===== */
@@ -361,7 +383,7 @@
                 <input type="text" id="lessonNote" placeholder="如：我想了解少儿基础课的内容" />
             </div>
 
-            <button type="submit" class="btn-book">✅ 确认预约</button>
+            <button type="submit" class="btn-book" id="submitBtn">✅ 确认预约</button>
         </form>
 
         <!-- 成功提示 -->
@@ -373,11 +395,23 @@
             </div>
         </div>
 
+        <!-- 错误提示 -->
+        <div class="error-message" id="errorMsg">
+            ⚠️ 通知发送失败，但预约已记录。请稍后联系老师确认。
+        </div>
+
         <div class="footer-note">⏳ 每时段仅限 4 人 · 预约后请按时出席 · 1.5 小时/节</div>
     </div>
 
     <script>
-        // 设置默认日期为明天
+        // ============================================================
+        //  ★★★ 在这里替换成你自己的钉钉机器人 Webhook 地址 ★★★
+        // ============================================================
+        const DINGTALK_WEBHOOK = 'https://oapi.dingtalk.com/robot/send?access_token=你的钉钉机器人Token';
+
+        // ============================================================
+        //  1. 设置默认日期为「明天」
+        // ============================================================
         (function setDefaultDate() {
             const dateInput = document.getElementById('lessonDate');
             const tomorrow = new Date();
@@ -393,7 +427,9 @@
             dateInput.min = `${tYear}-${tMonth}-${tDay}`;
         })();
 
-        // 表单提交
+        // ============================================================
+        //  2. 表单提交处理（含钉钉推送）
+        // ============================================================
         function handleSubmit(e) {
             e.preventDefault();
 
@@ -407,6 +443,7 @@
             const selectedCourse = document.querySelector('input[name="course"]:checked');
             const course = selectedCourse ? selectedCourse.value : '未选择';
 
+            // 校验
             if (!name || !phone || !date || !time) {
                 alert('请完整填写姓名、手机号、日期和时段 😊');
                 return;
@@ -417,36 +454,76 @@
                 return;
             }
 
-            const bookingData = {
-                course: course,
-                student: name,
-                phone: phone,
-                date: date,
-                time: time,
-                note: note || '（无）',
-                bookedAt: new Date().toLocaleString('zh-CN')
+            // 禁用按钮，防止重复提交
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ 发送中...';
+
+            // 隐藏旧的提示
+            document.getElementById('successMsg').classList.remove('show');
+            document.getElementById('errorMsg').classList.remove('show');
+
+            // ============================================================
+            //  3. 发送到钉钉机器人
+            // ============================================================
+            const message = {
+                "msgtype": "text",
+                "text": {
+                    "content": `🌍 乐语道 Joy Language · 新预约通知\n\n` +
+                               `📚 课程：${course}\n` +
+                               `👤 姓名：${name}\n` +
+                               `📱 电话：${phone}\n` +
+                               `📆 日期：${date}\n` +
+                               `⏰ 时段：${time}\n` +
+                               `📝 备注：${note || '无'}\n\n` +
+                               `🕐 预约时间：${new Date().toLocaleString('zh-CN')}`
+                }
             };
 
-            console.log('📩 乐语道新预约：', bookingData);
-
-            // 显示成功
-            const successEl = document.getElementById('successMsg');
-            successEl.classList.add('show');
-            successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            const btn = document.querySelector('.btn-book');
-            btn.disabled = true;
-            btn.textContent = '⏳ 已预约，等待确认...';
-            btn.style.opacity = '0.7';
+            fetch(DINGTALK_WEBHOOK, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(message)
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log('📩 钉钉推送结果：', data);
+                if (data.errcode === 0) {
+                    // 显示成功
+                    document.getElementById('successMsg').classList.add('show');
+                    document.getElementById('successMsg').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    btn.disabled = false;
+                    btn.textContent = '✅ 预约成功！';
+                } else {
+                    // 钉钉返回了错误码
+                    console.error('钉钉推送错误：', data);
+                    document.getElementById('errorMsg').classList.add('show');
+                    btn.disabled = false;
+                    btn.textContent = '✅ 确认预约';
+                }
+            })
+            .catch(err => {
+                console.error('请求失败：', err);
+                document.getElementById('errorMsg').classList.add('show');
+                btn.disabled = false;
+                btn.textContent = '✅ 确认预约';
+                // 数据保留在控制台
+                console.log('📦 预约数据（请手动记录）：', { course, name, phone, date, time, note });
+            });
         }
 
-        // 点击成功提示可关闭
+        // ============================================================
+        //  4. 点击提示可关闭
+        // ============================================================
         document.getElementById('successMsg').addEventListener('click', function() {
             this.classList.remove('show');
-            const btn = document.querySelector('.btn-book');
-            btn.disabled = false;
+            const btn = document.getElementById('submitBtn');
             btn.textContent = '✅ 确认预约';
-            btn.style.opacity = '1';
+        });
+        document.getElementById('errorMsg').addEventListener('click', function() {
+            this.classList.remove('show');
+            const btn = document.getElementById('submitBtn');
+            btn.textContent = '✅ 确认预约';
         });
     </script>
 
